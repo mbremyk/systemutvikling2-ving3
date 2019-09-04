@@ -103,7 +103,7 @@ app.post("/person", (req, res) => {
     });
 }); */
 
-app.get("/index", (req, res) => {
+app.get("/news/all", (req, res) => {
     console.log("GET-request received from client");
     pool.getConnection((err, connection) => {
         if (err) {
@@ -128,7 +128,7 @@ app.get("/index", (req, res) => {
     });
 });
 
-app.post("/index", (req, res) => {
+app.post("/news/new", (req, res) => {
     console.log("POST-request received from client");
     pool.getConnection((err, connection) => {
         if(err) {
@@ -151,6 +151,81 @@ app.post("/index", (req, res) => {
                     }
                 }
             )
+        }
+    });
+});
+
+app.get("/news/", (req, res) => {
+    console.log("GET-request received from client");
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.log("Error during connection");
+            res.json({ "error": "error during connection" });
+        } else {
+            console.log("Database connection aquired");
+            connection.query(
+                "SELECT * FROM news WHERE priority = 1",
+                (err, rows) => {
+                    connection.release();
+                    if(err) {
+                        console.log(err);
+                        res.json({"error":"error during query"})
+                    } else {
+                        console.log(rows);
+                        res.json(rows);
+                    }
+                }
+            );
+        }
+    });
+});
+
+app.get("/news/category=0", (req, res) => {
+    console.log("GET-request received from client");
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.log("Error during connection");
+            res.json({ "error": "error during connection" });
+        } else {
+            console.log("Database connection aquired");
+            connection.query(
+                "SELECT * FROM news WHERE categoryId = 0",
+                (err, rows) => {
+                    connection.release();
+                    if(err) {
+                        console.log(err);
+                        res.json({"error":"error during query"})
+                    } else {
+                        console.log(rows);
+                        res.json(rows);
+                    }
+                }
+            );
+        }
+    });
+});
+
+app.get("/news/category=1", (req, res) => {
+    console.log("GET-request received from client");
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.log("Error during connection");
+            res.json({ "error": "error during connection" });
+        } else {
+            console.log("Database connection aquired");
+            connection.query(
+                "SELECT * FROM news WHERE categoryId = 1",
+                (err, rows) => {
+                    connection.release();
+                    if(err) {
+                        console.log(err);
+                        res.json({"error":"error during query"})
+                    } else {
+                        console.log(rows);
+                        res.json(rows);
+                    }
+                }
+            );
         }
     });
 });
